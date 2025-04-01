@@ -4,47 +4,111 @@
 <head>
   <title>Web Canvas by Samuel</title>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport"
+    content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <!-- Main container for the canvas and controls -->
-  <!-- TODO: Canvas element for drawing (=bruch) -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-lg-9 p-0">
+        <canvas id="myCanvas" width="1600" height="1200"></canvas>
+      </div>
 
-  <!-- Controls for drawing tools and settings -->
-  <!-- TODO: Color and brush size controls -->
-  <!-- TODO: Brush size slider -->
-  <!-- TODO: color selection -->
-  <!-- TODO: Display the currently selected color -->
+      <div class="col-12 col-lg-3 bg-light p-3">
+        <div class="controls">
+          <h2>Drawing Controls</h2>
+          <div class="form-group">
+            <label for="brushSize">Brush Size:</label>
+            <input type="range" class="form-control-range" id="brushSize" value="10" min="1" max="100">
+            <span id="brushSizeValue">10</span>
+          </div>
+          <div class="form-group">
+            <label>Color:</label>
+            <div class="d-flex">
+              <input type="color" id="colorPicker" value="#000000" class="mr-2">
+            </div>
+          </div>
 
-  <!-- TODO: Text Font -->
-  <!-- TODO: Text size selection -->
+          <div class="form-group">
+            <label for="fontSelect">Font:</label>
+            <select id="fontSelect" class="form-control">
+              <option value="Arial">Arial</option>
+              <option value="Verdana">Verdana</option>
+              <option value="Roboto">Roboto</option>
+              <option value="Comic Sans MS">Comic Sans MS</option>
+              <option value="Tahoma">Tahoma</option>
+              <option value="Times New Roman">Times New Roman</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fontSize">Font Size:</label>
+            <input type="number" class="form-control" id="fontSize" value="20" min="10" max="100">
+          </div>
 
-  <!-- Tool buttons for drawing and editing -->
-  <!-- 
-    source format like:
-      <img src="./src/{item_name}_icon.png" >
-  -->
-  <!-- TODO: brushBtn -->
-  <!-- TODO: eraserBtn -->
-  <!-- TODO: textBtn -->
-  <!-- TODO: lineBtn -->
-  <!-- TODO: circleBtn -->
-  <!-- TODO: rectangleBtn -->
-  <!-- TODO: triangleBtn -->
+          <div class="btn-group-vertical btn-group-lg d-flex" role="group">
+            <button id="brushBtn" class="btn btn-secondary tool-btn active" data-tool="brush">
+              <i class="fas fa-paint-brush"></i> Brush
+            </button>
+            <button id="eraserBtn" class="btn btn-secondary tool-btn" data-tool="eraser">
+              <i class="fas fa-eraser"></i> Eraser
+            </button>
+            <button id="textBtn" class="btn btn-secondary tool-btn" data-tool="text">
+              <i class="fas fa-font"></i> Text
+            </button>
+            <button id="lineBtn" class="btn btn-secondary tool-btn" data-tool="line">
+              <i class="fas fa-minus"></i> Line
+            </button>
+          </div>
 
-  <!-- TODO: Checkbox for toggling shape fill -->
+          <div class="btn-group-vertical btn-group-lg d-flex mt-2" role="group">
+            <button id="circleBtn" class="btn btn-secondary tool-btn" data-tool="circle">
+              <i class="far fa-circle"></i> Circle
+            </button>
+            <button id="rectangleBtn" class="btn btn-secondary tool-btn" data-tool="rectangle">
+              <i class="far fa-square"></i> Rectangle
+            </button>
+            <button id="triangleBtn" class="btn btn-secondary tool-btn" data-tool="triangle">
+              <i class="fas fa-caret-up"></i> Triangle
+            </button>
+            <label for="fillCheckbox" class="d-flex align-items-center">
+              <input type="checkbox" id="fillCheckbox" class="mr-2" style="width: 20px; height: 20px;">
+              Fill Shape
+            </label>
+          </div>
 
-  <!-- Action buttons for canvas operations -->
-  <!-- TODO: clearBtn -->
-  <!-- TODO: undoBtn -->
-  <!-- TODO: redoBtn -->
+          <div class="btn-group btn-group-lg d-flex mt-2" role="group">
+            <button id="clearBtn" class="btn btn-danger">
+              <i class="fas fa-trash"></i> Clear
+            </button>
+            <button id="undoBtn" class="btn btn-warning">
+              <i class="fas fa-undo"></i> Undo
+            </button>
+            <button id="redoBtn" class="btn btn-warning">
+              <i class="fas fa-redo"></i> Redo
+            </button>
+          </div>
 
-  <!-- File input/output -->
-  <!-- TODO: downloadBtn -->
-  <!-- TODO: uploadBtn -->
+          <div class="btn-group btn-group-lg d-flex mt-2" role="group">
+            <label for="uploadBtn" class="btn btn-primary">
+              <i class="fas fa-upload"></i> Upload
+            </label>
+            <input type="file" id="uploadBtn" accept="image/*" style="display: none;">
+          </div>
+          <div class="btn-group btn-group-lg d-flex mt-2" role="group">
+            <button id="downloadBtn" class="btn btn-primary">
+              <i class="fas fa-download"></i> Download
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="https://kit.fontawesome.com/a076d05399.js"></script>
   <script src="script.js"></script>

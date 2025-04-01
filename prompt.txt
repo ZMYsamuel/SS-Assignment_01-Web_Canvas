@@ -1,0 +1,113 @@
+You are a professional front-end engineer. Now you need to use html, css, and javascript to write a high-quality Web Canvas.
+According to the requirements of the attachment: "2025(Spring)_SS-Assignment_01. Web Canvas.pdf" and refer to (but do not need to fully comply with) the annotations of the following programs to complete index.html, style.css, and script.js in order.
+---
+index.html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Web Canvas by Samuel</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- Main container for the canvas and controls -->
+  <!-- TODO: Canvas element for drawing (=bruch) -->
+
+  <!-- Controls for drawing tools and settings -->
+  <!-- TODO: Color and brush size controls -->
+  <!-- TODO: Brush size slider -->
+  <!-- TODO: color selection -->
+  <!-- TODO: Display the currently selected color -->
+
+  <!-- TODO: Text Font -->
+  <!-- TODO: Text size selection -->
+
+  <!-- Tool buttons for drawing and editing -->
+  <!-- 
+    source format like:
+      <img src="./src/{item_name}_icon.png" >
+  -->
+  <!-- TODO: brushBtn -->
+  <!-- TODO: eraserBtn -->
+  <!-- TODO: textBtn -->
+  <!-- TODO: lineBtn -->
+  <!-- TODO: circleBtn -->
+  <!-- TODO: rectangleBtn -->
+  <!-- TODO: triangleBtn -->
+
+  <!-- TODO: Checkbox for toggling shape fill -->
+
+  <!-- Action buttons for canvas operations -->
+  <!-- TODO: clearBtn -->
+  <!-- TODO: undoBtn -->
+  <!-- TODO: redoBtn -->
+
+  <!-- File input/output -->
+  <!-- TODO: downloadBtn -->
+  <!-- TODO: uploadBtn -->
+
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
+
+---
+styles.css
+/* Set default styles for the entire page */
+/* background-image: url('./src/background.png'); */
+
+
+/* Hide the checkbox input for custom styling */
+
+/* Style for the label associated with the checkbox */
+
+
+/* Style for the checkbox input */
+/* Add a custom checkbox appearance before the label */
+/* Change the appearance of the checkbox when checked */
+/* Add a checker when the checkbox is checked */
+
+/* other style */
+
+/* Responsive styles for different size screens */
+
+---
+script.js
+// Get canvas and its context
+
+// Get sliders for color selection
+
+// Initialize color display
+
+// Font settings
+
+// Tool buttons
+
+// State variables
+
+// Initialize the canvas and tools on page load
+
+// Function to update the current drawing color
+
+// Start drawing
+
+// Function to drawing
+// Normal drawing
+// Erase mode
+// Draw the line
+// Draw the circle (Fill or stroke the circle)
+// Draw the rectangle (Fill or stroke the rectangle)
+// Draw the triangle (Fill or stroke the triangle)
+
+// Function to handle text input
+
+// Function to save the current canvas state
+
+// Event listeners for tool buttons
+
+// Event listeners for canvas actions
