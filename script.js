@@ -5,6 +5,8 @@ const ctx = canvas.getContext('2d');
 // Get sliders for color selection
 const brushSizeSlider = document.getElementById('brushSize');
 const brushSizeValue = document.getElementById('brushSizeValue');
+const opacitySlider = document.getElementById('opacitySlider');
+const opacityValue = document.getElementById('opacityValue');
 const colorPicker = document.getElementById('colorPicker');
 
 // Font settings
@@ -48,6 +50,7 @@ window.onload = function () {
   ctx.fillStyle = colorPicker.value;
   ctx.strokeStyle = colorPicker.value;
   ctx.lineWidth = brushSizeSlider.value;
+  ctx.globalAlpha = opacitySlider.value;
   saveCanvasState();
   initEventHandlers();
   updateCursorStyle(); // Initialize cursor style
@@ -62,6 +65,7 @@ function initEventHandlers() {
 
   // Event listeners for color and brush size
   brushSizeSlider.addEventListener('input', updateBrushSize);
+  opacitySlider.addEventListener('input', updateOpacity);
   colorPicker.addEventListener('change', updateColor);
 
   // Event listeners for font settings
@@ -83,6 +87,25 @@ function initEventHandlers() {
   redoBtn.addEventListener('click', redo);
   downloadBtn.addEventListener('click', downloadCanvas);
   uploadBtn.addEventListener('change', uploadCanvas);
+
+  // Add event listeners for predefined color buttons
+  const colorButtons = document.querySelectorAll('.color-btn');
+  colorButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+      const selectedColor = event.target.dataset.color;
+      colorPicker.value = selectedColor; // Update the color picker value
+      updateColor(); // Update the canvas color
+      updateCursorStyle(); // Update the custom cursor color
+      colorButtons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    });
+  });
+
+  // 設置黑色按鈕為 active
+  const defaultColorButton = document.querySelector('.color-btn[data-color="#000000"]');
+  if (defaultColorButton) {
+    defaultColorButton.classList.add('active');
+  }
 }
 
 // Function to update the current drawing color
@@ -95,6 +118,11 @@ function updateColor() {
 function updateBrushSize() {
   ctx.lineWidth = brushSizeSlider.value;
   brushSizeValue.textContent = brushSizeSlider.value;
+}
+// Function to update the opacity
+function updateOpacity() {
+  ctx.globalAlpha = opacitySlider.value;
+  opacityValue.textContent = opacitySlider.value;
 }
 
 // Function to select the drawing tool
@@ -113,7 +141,7 @@ function selectTool(event) {
 
 function getCursorStyle(tool) {
   switch (tool) {
-    case 'brush': return 'none';
+    case 'brush': return "url('./src/brush_icon.png'), auto";
     case 'eraser': return 'none';
     case 'text': return 'text';
     case 'line': return 'crosshair';
@@ -137,6 +165,7 @@ function startDrawing(event) {
   if (selectedTool === 'text') {
     const input = createTextInput();
     input.focus();
+    stopDrawing();
   }
 }
 
@@ -159,8 +188,12 @@ function draw(event) {
 
   switch (selectedTool) {
     case 'brush':
+      // ctx.beginPath(); // 每次繪製新的一段筆畫
+      // ctx.moveTo(startX, startY); // 確保從上一點開始
       ctx.lineTo(x, y);
       ctx.stroke();
+      // startX = x; // 更新起點
+      // startY = y;
       break;
     case 'eraser':
       ctx.globalCompositeOperation = 'destination-out'; // Use destination-out for erasing
@@ -347,9 +380,41 @@ function uploadCanvas(event) {
     reader.onload = function (e) {
       const img = new Image();
       img.onload = function () {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        saveCanvasState();
+        let imgX = 0;
+        let imgY = 0;
+        let imgWidth = img.width;
+        let imgHeight = img.height;
+
+        // Temporarily draw the image at the mouse position
+        const mouseMoveHandler = (moveEvent) => {
+          restoreCanvasState(); // Restore the canvas state to avoid multiple drawings
+          imgX = moveEvent.offsetX - imgWidth / 2; // Center the image on the cursor
+          imgY = moveEvent.offsetY - imgHeight / 2; // Center the image on the cursor
+          ctx.drawImage(img, imgX, imgY, imgWidth, imgHeight);
+        };
+
+        // Add mousemove event listener to preview the image
+        canvas.addEventListener('mousemove', mouseMoveHandler);
+
+        // Add mousewheel event listener to resize the image
+        const wheelHandler = (wheelEvent) => {
+          wheelEvent.preventDefault();
+          const scale = wheelEvent.deltaY < 0 ? 1.1 : 0.9; // Zoom in or out
+          imgWidth *= scale;
+          imgHeight *= scale;
+        };
+
+        canvas.addEventListener('wheel', wheelHandler);
+
+        // Add click event listener to finalize the image position
+        const clickHandler = () => {
+          canvas.removeEventListener('mousemove', mouseMoveHandler);
+          canvas.removeEventListener('click', clickHandler);
+          canvas.removeEventListener('wheel', wheelHandler);
+          saveCanvasState(); // Save the canvas state after placing the image
+        };
+
+        canvas.addEventListener('click', clickHandler);
       };
       img.src = e.target.result;
     };
@@ -379,11 +444,13 @@ function updateCursorStyle() {
   const brushSize = brushSizeSlider.value;
   customCursor.style.width = `${brushSize}px`;
   customCursor.style.height = `${brushSize}px`;
+  customCursor.style.opacity = opacitySlider.value; // Match the brush opacity
   customCursor.style.borderColor = colorPicker.value; // Match the brush color
 }
 
 // Update cursor style when brush size or color changes
 brushSizeSlider.addEventListener('input', updateCursorStyle);
+opacitySlider.addEventListener('input', updateCursorStyle);
 colorPicker.addEventListener('change', updateCursorStyle);
 
 // Hide the custom cursor when the mouse leaves the canvas

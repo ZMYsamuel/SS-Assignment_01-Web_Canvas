@@ -69,18 +69,24 @@ label {
   text-align: center;
 }
 
-#colorPicker {
-  width: 38px;
-  height: 38px;
-  border: none;
-  padding: 0;
+.color-btn {
+  width: 50px;
+  height: 50px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 5px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
-#currentColor {
-  width: 38px;
-  height: 38px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+.color-btn:hover {
+  transform: scale(1.1);
+}
+
+.color-btn.active {
+  border-color: #000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 5px rgba(255, 255, 255, 0.5);
+  transform: scale(1.2);
 }
 
 select {
@@ -146,11 +152,13 @@ input[type="number"]:focus {
 .tool-btn.active {
   background-color: #007bff;
   color: white;
+  transform: scale(1.05);
 }
 
 .tool-btn:hover {
   background-color: #0056b3;
   color: white;
+  transform: scale(1.02);
 }
 
 .btn-group-vertical .btn {
