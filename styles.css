@@ -33,9 +33,18 @@ canvas {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+
+  /* 修改以下部分 */
+  position: fixed;
+  /* 固定位置 */
+  right: 20px;
+  /* 距离右侧 */
+  top: 20px;
+  /* 距离顶部 */
+  width: 30%;
+  max-height: 95vh;
+  overflow-y: auto;
+  z-index: 1000;
 }
 
 .controls h2 {
@@ -269,6 +278,7 @@ input[type="number"]:focus {
 
   .controls {
     height: auto;
+    width: 100%;
   }
 
   .btn-group-vertical {
@@ -334,4 +344,59 @@ input[type="number"]:focus {
   /* Center the cursor */
   z-index: 1000;
   /* Ensure it appears above other elements */
+}
+
+/*  */
+.myColor {
+  width: 400px;
+  height: 250px;
+  position: relative;
+  left: 25px;
+  top: 1px;
+  background-color: transparent;
+}
+
+/* 基本樣式 */
+#colornow {
+  border-radius: 5px;
+  position: relative;
+  top: 25px;
+  right: 10px;
+  background-color: black;
+  border: solid 1px #ffffff;
+  width: 75px;
+  height: 75px;
+  cursor: pointer;
+  /* 添加鼠標指針效果 */
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+/* 鼠標懸停效果 */
+#colornow:hover {
+  transform: scale(1.1);
+}
+
+/* 被選中時的效果 */
+#colornow.active {
+  border-color: #000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 5px rgba(255, 255, 255, 0.5);
+  transform: scale(1.2);
+}
+
+#colorselect {
+  border-radius: 5px;
+  position: relative;
+  top: 25px;
+  left: 10px;
+  background-color: transparent;
+  border: solid 1px #ffffff;
+}
+
+#colorline {
+  border-radius: 5px;
+  position: relative;
+  top: 25px;
+  left: 10px;
+  background-color: transparent;
+  border: solid 1px #ffffff;
 }

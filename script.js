@@ -54,6 +54,7 @@ window.onload = function () {
   saveCanvasState();
   initEventHandlers();
   updateCursorStyle(); // Initialize cursor style
+  canvas.style.cursor = getCursorStyle(selectedTool);
 };
 
 // Function to initialize event handlers
@@ -98,6 +99,7 @@ function initEventHandlers() {
       updateCursorStyle(); // Update the custom cursor color
       colorButtons.forEach(btn => btn.classList.remove('active'));
       event.target.classList.add('active');
+      colornowElement.classList.remove('active');
     });
   });
 
@@ -141,13 +143,13 @@ function selectTool(event) {
 
 function getCursorStyle(tool) {
   switch (tool) {
-    case 'brush': return "url('./src/brush_icon.png'), auto";
-    case 'eraser': return 'none';
-    case 'text': return 'text';
-    case 'line': return 'crosshair';
-    case 'circle': return 'crosshair';
-    case 'rectangle': return 'crosshair';
-    case 'triangle': return 'crosshair';
+    case 'brush': return "url('./src/small-brush-icon.png'), auto";
+    case 'eraser': return "url('./src/eraser_icon.png'), auto";
+    case 'text': return "url('./src/text_icon.png'), auto";
+    case 'line': return "url('./src/line_icon.png'), auto";
+    case 'circle': return "url('./src/circle_icon.png'), auto";
+    case 'rectangle': return "url('./src/rectangle_icon.png'), auto";
+    case 'triangle': return "url('./src/triangle_icon.png'), auto";
     default: return 'crosshair';
   }
 }
@@ -466,4 +468,151 @@ canvas.addEventListener('mouseenter', () => {
   else {
     customCursor.style.display = 'none';
   }
+});
+
+///////////////////////////////////////////////////////
+// Color Selection Implementation
+///////////////////////////////////////////////////////
+// Initialize color-related canvases
+const colorBlock = document.getElementById('colorselect');
+const ctxBlock = colorBlock.getContext('2d');
+colorBlock.width = 200;
+colorBlock.height = 200;
+const blockWidth = colorBlock.width;
+const blockHeight = colorBlock.height;
+
+const colorLine = document.getElementById('colorline');
+const ctxLine = colorLine.getContext('2d');
+colorLine.width = 20;
+colorLine.height = 200;
+const lineWidth = colorLine.width;
+const lineHeight = colorLine.height;
+
+const colorNow = document.getElementById('colornow');
+const ctxNow = colorNow.getContext('2d');
+colorNow.style.backgroundColor = "black";
+
+let x = 0;
+let y = 0;
+let rgbaColor = 'rgba(255,0,0,1)';
+let isMouseDown = false;
+
+// Let the cursor be a crosshair when hovering over the color line and block
+colorLine.style.cursor = 'crosshair';
+colorBlock.style.cursor = 'crosshair';
+
+// Initialize gradient for the color line
+ctxLine.rect(0, 0, lineWidth, lineHeight);
+const grdLine = ctxLine.createLinearGradient(0, 0, 0, lineHeight);
+grdLine.addColorStop(0, 'rgba(255, 0, 0, 1)');
+grdLine.addColorStop(0.17, 'rgba(255, 255, 0, 1)');
+grdLine.addColorStop(0.34, 'rgba(0, 255, 0, 1)');
+grdLine.addColorStop(0.51, 'rgba(0, 255, 255, 1)');
+grdLine.addColorStop(0.68, 'rgba(0, 0, 255, 1)');
+grdLine.addColorStop(0.84, 'rgba(255, 0, 255, 1)');
+grdLine.addColorStop(1, 'rgba(255, 0, 0, 1)');
+ctxLine.fillStyle = grdLine;
+ctxLine.fill();
+
+// Initialize gradient for the color block
+ctxBlock.rect(0, 0, blockWidth, blockHeight);
+updateGradient();
+// Set the initial color of the colornow element
+colorNow.style.backgroundColor = rgbaColor;
+
+function updateGradient() {
+  ctxBlock.fillStyle = rgbaColor;
+  ctxBlock.fillRect(0, 0, blockWidth, blockHeight);
+
+  const grdWhite = ctxLine.createLinearGradient(0, 0, blockWidth, 0);
+  grdWhite.addColorStop(0, 'rgba(255,255,255,1)');
+  grdWhite.addColorStop(1, 'rgba(255,255,255,0)');
+  ctxBlock.fillStyle = grdWhite;
+  ctxBlock.fillRect(0, 0, blockWidth, blockHeight);
+
+  const grdBlack = ctxLine.createLinearGradient(0, 0, 0, blockHeight);
+  grdBlack.addColorStop(0, 'rgba(0,0,0,0)');
+  grdBlack.addColorStop(1, 'rgba(0,0,0,1)');
+  ctxBlock.fillStyle = grdBlack;
+  ctxBlock.fillRect(0, 0, blockWidth, blockHeight);
+}
+
+
+// Event listener for the color line
+colorLine.addEventListener("click", function (e) {
+  updateColorline(e);
+});
+colorLine.addEventListener("mousemove", function (e) {
+  if (isMouseDown) {
+    updateColorline(e);
+  }
+});
+
+// Event listeners for the color line
+colorLine.addEventListener("mousedown", function (e) {
+  isMouseDown = true;
+  updateColorline(e);
+});
+
+colorLine.addEventListener("mousemove", function (e) {
+  if (isMouseDown) {
+    updateColorline(e);
+  }
+});
+
+colorLine.addEventListener("mouseup", function () {
+  isMouseDown = false;
+});
+
+// Event listeners for the color block
+colorBlock.addEventListener("mousedown", function (e) {
+  isMouseDown = true;
+  updateColorNow(e);
+});
+
+colorBlock.addEventListener("mousemove", function (e) {
+  if (isMouseDown) {
+    updateColorNow(e);
+  }
+});
+
+colorBlock.addEventListener("mouseup", function () {
+  isMouseDown = false;
+});
+
+function updateColorline(e) {
+  x = e.offsetX;
+  y = e.offsetY;
+  const data = ctxLine.getImageData(x, y, 1, 1).data;
+  rgbaColor = `rgba(${data[0]},${data[1]},${data[2]},1)`;
+  updateGradient();
+}
+
+// Function to update the current color
+function updateColorNow(e) {
+  x = e.offsetX;
+  y = e.offsetY;
+  const data = ctxBlock.getImageData(x, y, 1, 1).data;
+  rgbaColor = `rgba(${data[0]},${data[1]},${data[2]},1)`;
+  colorNow.style.backgroundColor = rgbaColor;
+  colorPicker.value = rgbaColor; // Update the color picker value
+  updateColor(); // Update the canvas color
+  updateCursorStyle(); // Update the custom cursor color
+  // remove active class from all color buttons
+  const colorButtons = document.querySelectorAll('.color-btn');
+  colorButtons.forEach(btn => btn.classList.remove('active'));
+}
+// 讓 colornow 可以被選取並設置為 active
+const colornowElement = document.getElementById('colornow');
+
+colornowElement.addEventListener('click', () => {
+  const colorButtons = document.querySelectorAll('.color-btn');
+  colorButtons.forEach(btn => btn.classList.remove('active'));
+  colornowElement.classList.remove('active');
+  colornowElement.classList.add('active');
+  colorPicker.value = rgbaColor;
+  updateColor();
+
+  // 更新自定義游標顏色
+  updateCursorStyle();
 });
