@@ -14,7 +14,15 @@
 
 // Function to update the current drawing color
 
+// Start drawing
+
 // Function to drawing
+// Normal drawing
+// Erase mode
+// Draw the line
+// Draw the circle (Fill or stroke the circle)
+// Draw the rectangle (Fill or stroke the rectangle)
+// Draw the triangle (Fill or stroke the triangle)
 
 // Function to handle text input
 
