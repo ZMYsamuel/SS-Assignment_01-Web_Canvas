@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Web Canvas by Samuel</title>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-lg-8 p-0 d-flex justify-content-center align-items-center">
+        <canvas id="myCanvas" width="900" height="600"></canvas>
+      </div>
+      <div class="col-12 col-lg-4 controls">
+        <h2>Drawing Controls</h2>
+        <div class="form-group">
+          <label for="themeSwitch">Theme:</label>
+          <input type="checkbox" id="themeSwitch" style="display: none;">
+          <label for="themeSwitch" class="switch-label"></label><span> Dark mode </span>
+          <div id="themeSwitchAnimation" class="theme-animation"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="brushSize">Brush Size:</label>
+          <input type="range" class="form-control-range" id="brushSize" value="10" min="1" max="100">
+          <span id="brushSizeValue">10</span>
+        </div>
+        <div class="form-group">
+          <label for="opacitySlider">Opacity:</label>
+          <input type="range" class="form-control-range" id="opacitySlider" value="1" min="0.1" max="1" step="0.1">
+          <span id="opacityValue">1</span>
+        </div>
+        <div class="form-group">
+          <label>Color selector:</label>
+          <div class="d-flex" id="colorPicker" value="#000000" class="mr-2">
+            <div id="colorButtons" class="d-flex">
+              <button class="color-btn" style="background-color: #000000;" data-color="#000000" title="Black"></button>
+              <button class="color-btn" style="background-color: #FF0000;" data-color="#FF0000"></button>
+              <button class="color-btn" style="background-color: #00FF00;" data-color="#00FF00"></button>
+              <button class="color-btn" style="background-color: #0000FF;" data-color="#0000FF"></button>
+              <button class="color-btn" style="background-color: #FFFF00;" data-color="#FFFF00"></button>
+              <button class="color-btn" style="background-color: #FF00FF;" data-color="#FF00FF"></button>
+              <button class="color-btn" style="background-color: #00FFFF;" data-color="#00FFFF"></button>
+            </div>
+          </div>
+          <div class="myColor">
+            <canvas id="colornow"></canvas>
+            <canvas id="colorselect"></canvas>
+            <canvas id="colorline"></canvas>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="fontSelect">Font:</label>
+          <select id="fontSelect" class="form-control">
+            <option value="Arial">Arial</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Roboto">Roboto</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+            <option value="Tahoma">Tahoma</option>
+            <option value="Times New Roman">Times New Roman</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="fontSize">Font Size:</label>
+          <input type="number" class="form-control" id="fontSize" value="20" min="10" max="100">
+        </div>
+
+        <div class="btn-group btn-group-lg d-flex" role="group">
+          <button id="brushBtn" class="btn btn-secondary tool-btn active" data-tool="brush">
+            <i class="fas fa-paint-brush"></i>
+            <img src="./public/img/brush.png" class="inactive-icon" style="width: 75px; height: 75px;">
+            <img src="./public/img/brush.gif" class="active-icon" style="width: 75px; height: 75px;">
+            Brush
+          </button>
+          <button id="eraserBtn" class="btn btn-secondary tool-btn" data-tool="eraser">
+            <i class="fas fa-eraser"></i>
+            <img src="./img/eraser.png" class="inactive-icon" style="width: 75px; height: 75px;">
+            <img src="./img/eraser.gif" class="active-icon" style="width: 75px; height: 75px;">Eraser
+          </button>
+          <button id="textBtn" class="btn btn-secondary tool-btn" data-tool="text">
+            <i class="fas fa-font"></i>
+            <img src="./img/text.png" class="inactive-icon" style="width: 75px; height: 75px;">
+            <img src="./img/text.gif" class="active-icon" style="width: 75px; height: 75px;"> Text
+          </button>
+          <button id="lineBtn" class="btn btn-secondary tool-btn" data-tool="line">
+            <i class="fas fa-minus"></i>
+            <img src="./img/line.png" class="inactive-icon" style="width: 75px; height: 75px;">
+            <img src="./img/line.gif" class="active-icon" style="width: 75px; height: 75px;">
+            Line
+          </button>
+        </div>
+
+        <div class="btn-group btn-group-lg d-flex mt-2" role="group">
+          <button id="circleBtn" class="btn btn-secondary tool-btn" data-tool="circle">
+            <i class="far fa-circle"></i>
+            <img src="./img/circle.png" class="inactive-icon" style="width: 75px; height: 75px;">
+            <img src="./img/circle.gif" class="active-icon" style="width: 75px; height: 75px;">
+            Circle
+          </button>
+          <button id="rectangleBtn" class="btn btn-secondary tool-btn" data-tool="rectangle">
+            <i class="far fa-square"></i>
+            <img src="./img/rectangle.png" class="inactive-icon" style="width: 75px; height: 75px;">
+            <img src="./img/rectangle.gif" class="active-icon" style="width: 75px; height: 75px;"> Rectangle
+          </button>
+          <button id="triangleBtn" class="btn btn-secondary tool-btn" data-tool="triangle">
+            <i class="fas fa-caret-up"></i>
+            <img src="./img/triangle.png" class="inactive-icon" style="width: 75px; height: 75px;">
+            <img src="./img/triangle.gif" class="active-icon" style="width: 75px; height: 75px;"> Triangle
+          </button>
+        </div>
+        <div class="d-flex align-items-center">
+          <input type="checkbox" id="fillCheckbox">
+          <label for="fillCheckbox" class="switch-label"></label>
+          <span class="ml-2">Fill Shape</span>
+        </div>
+        <div class="btn-group btn-group-lg d-flex mt-2" role="group">
+          <button id="handBtn" class="btn btn-secondary tool-btn" data-tool="hand">
+            <i class="far fa-circle"></i>
+            <img src="./img/hand.png" class="inactive-icon" style="width: 75px; height: 75px;">
+            <img src="./img/hand.gif" class="active-icon" style="width: 75px; height: 75px;">
+            Drag tool
+          </button>
+        </div>
+
+        <div class="btn-group btn-group-lg d-flex mt-2" role="group">
+          <button id="clearBtn" class="btn btn-danger">
+            <i class="fas fa-trash"></i> Clear
+          </button>
+          <button id="undoBtn" class="btn btn-warning">
+            <i class="fas fa-undo"></i> Undo
+          </button>
+          <button id="redoBtn" class="btn btn-warning">
+            <i class="fas fa-redo"></i> Redo
+          </button>
+        </div>
+
+        <div class="btn-group-vertical btn-group-lg d-flex mt-2" role="group">
+          <label for="uploadBtn" class="btn btn-primary">
+            <i class="fas fa-upload"></i> Upload
+          </label>
+          <input type="file" id="uploadBtn" accept="image/*" style="display: none;">
+          <button id="downloadBtn" class="btn btn-primary">
+            <i class="fas fa-download"></i> Download
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
