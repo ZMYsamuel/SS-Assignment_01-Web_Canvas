@@ -291,8 +291,8 @@ function createTextInput() {
   input.type = 'text';
   input.id = 'textInput';
   input.style.position = 'absolute';
-  input.style.left = startX + 'px';
-  input.style.top = startY + 'px';
+  input.style.left = startX + 60 + 'px';
+  input.style.top = startY + 90 - fontSize / 2 + 'px';
   input.style.border = '1px solid #000';
   input.style.padding = '2px';
   input.style.fontFamily = font;
@@ -698,4 +698,27 @@ themeSwitch.addEventListener('change', () => {
     document.body.classList.remove('night-mode');
     document.body.classList.add('day-mode');
   }
+});
+
+// Enhance theme switch animation
+themeSwitch.addEventListener('change', () => {
+  const animationElement = document.getElementById('themeSwitchAnimation');
+  animationElement.classList.add('active');
+  document.body.classList.add('transitioning'); // Add transitioning class
+  setTimeout(() => {
+    animationElement.classList.remove('active');
+    document.body.classList.remove('transitioning'); // Remove transitioning class
+  }, 500);
+});
+
+// Add ripple effect to buttons
+document.querySelectorAll('.btn, .tool-btn').forEach(button => {
+  button.addEventListener('click', (event) => {
+    const ripple = document.createElement('span');
+    ripple.className = 'ripple';
+    ripple.style.left = `${event.offsetX - 45}px`;
+    ripple.style.top = `${event.offsetY - 45}px`;
+    button.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
 });
