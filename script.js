@@ -23,6 +23,7 @@ const circleBtn = document.getElementById('circleBtn');
 const rectangleBtn = document.getElementById('rectangleBtn');
 const triangleBtn = document.getElementById('triangleBtn');
 const fillCheckbox = document.getElementById('fillCheckbox');
+const handBtn = document.getElementById('handBtn');
 
 // Action buttons
 const clearBtn = document.getElementById('clearBtn');
@@ -44,6 +45,11 @@ let drawingTimeout; // Add this line
 let textInput;
 let fontSize = fontSizeInput.value;
 let font = fontSelect.value;
+let isDragging = false;
+let canvasOffsetX = 0;
+let canvasOffsetY = 0;
+let dragStartX, dragStartY;
+let scale = 1;
 
 // Initialize the canvas and tools on page load
 window.onload = function () {
@@ -150,6 +156,7 @@ function getCursorStyle(tool) {
     case 'circle': return "url('./img/circle_cursor.png') 32 32, auto";
     case 'rectangle': return "url('./img/rectangle_cursor.png') 32 32, auto";
     case 'triangle': return "url('./img/triangle_cursor.png') 32 32, auto";
+    case 'hand': return 'grab';
     default: return 'crosshair';
   }
 }
@@ -441,8 +448,8 @@ document.body.appendChild(customCursor);
 
 // Update the custom cursor position
 canvas.addEventListener('mousemove', (event) => {
-  const x = event.clientX - canvas.getBoundingClientRect().left;
-  const y = event.clientY - canvas.getBoundingClientRect().top;
+  const x = event.clientX;
+  const y = event.clientY;
   customCursor.style.left = `${x}px`;
   customCursor.style.top = `${y}px`;
 });
@@ -620,4 +627,75 @@ colornowElement.addEventListener('click', () => {
   colorPicker.value = rgbaColor;
   updateColor();
   updateCursorStyle();
+});
+
+// Event listener for hand tool
+handBtn.addEventListener('click', () => {
+  selectedTool = 'hand';
+  toolButtons.forEach(button => button.classList.remove('active'));
+  handBtn.classList.add('active');
+  canvas.style.cursor = 'grab';
+});
+
+// Mouse down to start dragging
+canvas.addEventListener('mousedown', (event) => {
+  if (selectedTool === 'hand') {
+    isDragging = true;
+    dragStartX = event.clientX - canvasOffsetX;
+    dragStartY = event.clientY - canvasOffsetY;
+    canvas.style.cursor = 'grabbing';
+  }
+});
+
+// Mouse move to drag the canvas
+canvas.addEventListener('mousemove', (event) => {
+  if (isDragging) {
+    canvasOffsetX = event.clientX - dragStartX;
+    canvasOffsetY = event.clientY - dragStartY;
+    canvas.style.transform = `translate(${canvasOffsetX}px, ${canvasOffsetY}px) scale(${scale})`;
+  }
+});
+
+// Mouse up to stop dragging
+canvas.addEventListener('mouseup', () => {
+  if (isDragging) {
+    isDragging = false;
+    canvas.style.cursor = 'grab';
+  }
+});
+
+// Mouse leave to stop dragging
+canvas.addEventListener('mouseleave', () => {
+  if (isDragging) {
+    isDragging = false;
+    canvas.style.cursor = 'grab';
+  }
+});
+
+// Mouse wheel to zoom in/out
+canvas.addEventListener('wheel', (event) => {
+  if (selectedTool === 'hand') {
+    event.preventDefault();
+    const zoomFactor = 0.1;
+    scale += event.deltaY < 0 ? zoomFactor : -zoomFactor;
+    scale = Math.min(Math.max(scale, 0.5), 3); // Limit zoom scale between 0.5 and 3
+    canvas.style.transform = `translate(${canvasOffsetX}px, ${canvasOffsetY}px) scale(${scale})`;
+  }
+});
+
+
+const themeSwitch = document.getElementById('themeSwitch');
+
+// 初始化為白天模式
+document.body.classList.add('day-mode');
+
+// 切換主題模式
+themeSwitch.addEventListener('change', () => {
+  if (themeSwitch.checked) {
+    document.body.classList.remove('day-mode');
+    document.body.classList.add('night-mode');
+  } else {
+    document.body.classList.remove('night-mode');
+    document.body.classList.add('day-mode');
+  }
 });
