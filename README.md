@@ -32,8 +32,6 @@
 
 #### Basic Control Tools
 
-
-
 - **Brush and Eraser**  
 <img width="300px" src="./readme_img/brush&eraser.png"/>
     Click the "Brush" or "Eraser" button to use the mouse for drawing or erasing on the canvas. The eraser can remove everything on the canvas, including uploaded images.
@@ -47,7 +45,7 @@
     Adjust the brush size by moving the slider with the mouse.
 
 - **Text Input**
-<img width="300px" src="./readme_img/brush_size.png"/>
+<img width="300px" src="./readme_img/text.png"/>
     Click the "Text" button to enter text input mode. Click on the desired location on the canvas to open a text box. After typing, press the Enter key to confirm, and the text will appear at the specified position.
 
 - **Font Menu (Typeface and Size)**  
@@ -103,6 +101,9 @@ This section describes additional bonus features and their usage:
 
     your web page URL.
 
+    https://ss-assignment01-webcanvas.web.app
+    https://ss-assignment01-webcanvas.firebaseapp.com/
+
 ### Others (Optional)
 
     Anything you want to say to TAs.
@@ -134,10 +135,3 @@ Thank you for reviewing our work! I truly appreciate the time and effort you’v
 2. A "Fill Shape" toggle is available to switch between hollow and solid shapes for circle, rectangle, and triangle brushes.
 3. Enhanced button designs include hover and selection feedback, with animations for selected icons.
 4. Switching themes (light/dark mode) includes special transition effects.
-
-
-<style>
-table th{
-    width: 100%;
-}
-</style>
