@@ -1,15 +1,12 @@
-// Get canvas and its context
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 
-// Get sliders for color selection
 const brushSizeSlider = document.getElementById('brushSize');
 const brushSizeValue = document.getElementById('brushSizeValue');
 const opacitySlider = document.getElementById('opacitySlider');
 const opacityValue = document.getElementById('opacityValue');
 const colorPicker = document.getElementById('colorPicker');
 
-// Font settings
 const fontSelect = document.getElementById('fontSelect');
 const fontSizeInput = document.getElementById('fontSize');
 
@@ -40,8 +37,8 @@ let selectedTool = 'brush';
 let startX, startY;
 let history = [];
 let historyStep = 0;
-let canvasImage; //Store the image.
-let drawingTimeout; // Add this line
+let canvasImage;
+let drawingTimeout;
 let textInput;
 let fontSize = fontSizeInput.value;
 let font = fontSelect.value;
@@ -59,23 +56,20 @@ window.onload = function () {
   ctx.globalAlpha = opacitySlider.value;
   saveCanvasState();
   initEventHandlers();
-  updateCursorStyle(); // Initialize cursor style
+  updateCursorStyle();
   canvas.style.cursor = getCursorStyle(selectedTool);
 };
 
 // Function to initialize event handlers
 function initEventHandlers() {
-  // Event listeners for canvas
   canvas.addEventListener('mousedown', startDrawing);
   canvas.addEventListener('mouseup', stopDrawing);
   canvas.addEventListener('mousemove', draw);
 
-  // Event listeners for color and brush size
   brushSizeSlider.addEventListener('input', updateBrushSize);
   opacitySlider.addEventListener('input', updateOpacity);
   colorPicker.addEventListener('change', updateColor);
 
-  // Event listeners for font settings
   fontSelect.addEventListener('change', () => {
     font = fontSelect.value;
   });
@@ -83,51 +77,44 @@ function initEventHandlers() {
     fontSize = fontSizeInput.value;
   });
 
-  // Event listeners for tool buttons
   toolButtons.forEach(button => {
     button.addEventListener('click', selectTool);
   });
 
-  // Event listeners for action buttons
   clearBtn.addEventListener('click', clearCanvas);
   undoBtn.addEventListener('click', undo);
   redoBtn.addEventListener('click', redo);
   downloadBtn.addEventListener('click', downloadCanvas);
   uploadBtn.addEventListener('change', uploadCanvas);
 
-  // Add event listeners for predefined color buttons
   const colorButtons = document.querySelectorAll('.color-btn');
   colorButtons.forEach(button => {
     button.addEventListener('click', (event) => {
       const selectedColor = event.target.dataset.color;
-      colorPicker.value = selectedColor; // Update the color picker value
-      updateColor(); // Update the canvas color
-      updateCursorStyle(); // Update the custom cursor color
+      colorPicker.value = selectedColor;
+      updateColor();
+      updateCursorStyle();
       colorButtons.forEach(btn => btn.classList.remove('active'));
       event.target.classList.add('active');
       colornowElement.classList.remove('active');
     });
   });
 
-  // 設置黑色按鈕為 active
   const defaultColorButton = document.querySelector('.color-btn[data-color="#000000"]');
   if (defaultColorButton) {
     defaultColorButton.classList.add('active');
   }
 }
 
-// Function to update the current drawing color
 function updateColor() {
   ctx.fillStyle = colorPicker.value;
   ctx.strokeStyle = colorPicker.value;
 }
 
-// Function to update the brush size
 function updateBrushSize() {
   ctx.lineWidth = brushSizeSlider.value;
   brushSizeValue.textContent = brushSizeSlider.value;
 }
-// Function to update the opacity
 function updateOpacity() {
   ctx.globalAlpha = opacitySlider.value;
   opacityValue.textContent = opacitySlider.value;
@@ -202,27 +189,26 @@ function draw(event) {
         ctx.stroke();
       }
       else {
-        ctx.beginPath(); // 每次繪製新的一段筆畫
-        ctx.moveTo(startX, startY); // 確保從上一點開始
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
         ctx.lineTo(x, y);
         ctx.stroke();
-        startX = x; // 更新起點
+        startX = x;
         startY = y;
       }
       break;
     case 'eraser':
-      ctx.globalCompositeOperation = 'destination-out'; // Use destination-out for erasing
+      ctx.globalCompositeOperation = 'destination-out';
       ctx.lineTo(x, y);
       ctx.stroke();
-      ctx.globalCompositeOperation = 'source-over'; // Reset to default
+      ctx.globalCompositeOperation = 'source-over';
       break;
     case 'line':
-      // Use a timeout to delay the drawing and show preview
       if (drawingTimeout) {
         clearTimeout(drawingTimeout);
       }
       drawingTimeout = setTimeout(() => {
-        restoreCanvasState(); // Restore the initial state
+        restoreCanvasState();
         ctx.beginPath();
         ctx.moveTo(startX, startY);
         ctx.lineTo(x, y);
@@ -270,7 +256,7 @@ function draw(event) {
         ctx.beginPath();
         ctx.moveTo(startX, startY);
         ctx.lineTo(x, y);
-        ctx.lineTo(startX - (x - startX), y);  // Corrected line
+        ctx.lineTo(startX - (x - startX), y);
         ctx.closePath();
         if (fillCheckbox.checked) {
           ctx.fill();
@@ -324,7 +310,6 @@ function saveCanvasState() {
     history.push(canvasImage);
     historyStep++;
   } else {
-    //when undo and draw again on the canvas.
     history.splice(historyStep, history.length - historyStep, canvasImage);
     historyStep++;
   }
@@ -372,8 +357,10 @@ document.addEventListener('keydown', (event) => {
 
 // Function to clear the entire canvas
 function clearCanvas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  saveCanvasState(); // Save the current state before clearing
+  if (confirm('Are you sure you want to clear the canvas?')) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    saveCanvasState();
+  }
 }
 
 // Function to download the canvas as an image
@@ -387,10 +374,21 @@ function downloadCanvas() {
   document.body.removeChild(a);
 }
 
+// Function to handle the upload cursor
+function setUploadCursor() {
+  canvas.style.cursor = "url('./img/upload_cursor.png') 32 32, auto";
+}
+
+// Function to reset the cursor after upload
+function resetCursorAfterUpload() {
+  canvas.style.cursor = getCursorStyle(selectedTool);
+}
+
 // Function to upload an image to the canvas
 function uploadCanvas(event) {
   const file = event.target.files[0];
   if (file) {
+    setUploadCursor();
     const reader = new FileReader();
     reader.onload = function (e) {
       const img = new Image();
@@ -400,21 +398,18 @@ function uploadCanvas(event) {
         let imgWidth = img.width;
         let imgHeight = img.height;
 
-        // Temporarily draw the image at the mouse position
         const mouseMoveHandler = (moveEvent) => {
-          restoreCanvasState(); // Restore the canvas state to avoid multiple drawings
-          imgX = moveEvent.offsetX - imgWidth / 2; // Center the image on the cursor
-          imgY = moveEvent.offsetY - imgHeight / 2; // Center the image on the cursor
+          restoreCanvasState();
+          imgX = moveEvent.offsetX - imgWidth / 2;
+          imgY = moveEvent.offsetY - imgHeight / 2;
           ctx.drawImage(img, imgX, imgY, imgWidth, imgHeight);
         };
 
-        // Add mousemove event listener to preview the image
         canvas.addEventListener('mousemove', mouseMoveHandler);
 
-        // Add mousewheel event listener to resize the image
         const wheelHandler = (wheelEvent) => {
           wheelEvent.preventDefault();
-          const scale = wheelEvent.deltaY < 0 ? 1.1 : 0.9; // Zoom in or out
+          const scale = wheelEvent.deltaY < 0 ? 1.1 : 0.9;
           imgWidth *= scale;
           imgHeight *= scale;
         };
@@ -426,7 +421,8 @@ function uploadCanvas(event) {
           canvas.removeEventListener('mousemove', mouseMoveHandler);
           canvas.removeEventListener('click', clickHandler);
           canvas.removeEventListener('wheel', wheelHandler);
-          saveCanvasState(); // Save the canvas state after placing the image
+          saveCanvasState();
+          resetCursorAfterUpload();
         };
 
         canvas.addEventListener('click', clickHandler);
@@ -459,11 +455,10 @@ function updateCursorStyle() {
   const brushSize = brushSizeSlider.value;
   customCursor.style.width = `${brushSize}px`;
   customCursor.style.height = `${brushSize}px`;
-  customCursor.style.opacity = opacitySlider.value; // Match the brush opacity
-  customCursor.style.borderColor = colorPicker.value; // Match the brush color
+  customCursor.style.opacity = opacitySlider.value;
+  customCursor.style.borderColor = colorPicker.value;
 }
 
-// Update cursor style when brush size or color changes
 brushSizeSlider.addEventListener('input', updateCursorStyle);
 opacitySlider.addEventListener('input', updateCursorStyle);
 colorPicker.addEventListener('change', updateCursorStyle);
@@ -527,10 +522,8 @@ grdLine.addColorStop(1, 'rgba(255, 0, 0, 1)');
 ctxLine.fillStyle = grdLine;
 ctxLine.fill();
 
-// Initialize gradient for the color block
 ctxBlock.rect(0, 0, blockWidth, blockHeight);
 updateGradient();
-// Set the initial color of the colornow element
 colorNow.style.backgroundColor = rgbaColor;
 
 function updateGradient() {
@@ -608,15 +601,13 @@ function updateColorNow(e) {
   const data = ctxBlock.getImageData(x, y, 1, 1).data;
   rgbaColor = `rgba(${data[0]},${data[1]},${data[2]},1)`;
   colorNow.style.backgroundColor = rgbaColor;
-  colorPicker.value = rgbaColor; // Update the color picker value
-  updateColor(); // Update the canvas color
-  updateCursorStyle(); // Update the custom cursor color
-  // remove active class from all color buttons
+  colorPicker.value = rgbaColor;
+  updateColor();
+  updateCursorStyle();
   const colorButtons = document.querySelectorAll('.color-btn');
   colorButtons.forEach(btn => btn.classList.remove('active'));
   colornowElement.classList.add('active');
 }
-// 讓 colornow 可以被選取並設置為 active
 const colornowElement = document.getElementById('colornow');
 
 colornowElement.addEventListener('click', () => {
@@ -678,7 +669,7 @@ canvas.addEventListener('wheel', (event) => {
     event.preventDefault();
     const zoomFactor = 0.1;
     scale += event.deltaY < 0 ? zoomFactor : -zoomFactor;
-    scale = Math.min(Math.max(scale, 0.5), 3); // Limit zoom scale between 0.5 and 3
+    scale = Math.min(Math.max(scale, 0.5), 3);
     canvas.style.transform = `translate(${canvasOffsetX}px, ${canvasOffsetY}px) scale(${scale})`;
   }
 });
@@ -686,10 +677,8 @@ canvas.addEventListener('wheel', (event) => {
 
 const themeSwitch = document.getElementById('themeSwitch');
 
-// 初始化為白天模式
 document.body.classList.add('day-mode');
 
-// 切換主題模式
 themeSwitch.addEventListener('change', () => {
   if (themeSwitch.checked) {
     document.body.classList.remove('day-mode');
@@ -704,10 +693,10 @@ themeSwitch.addEventListener('change', () => {
 themeSwitch.addEventListener('change', () => {
   const animationElement = document.getElementById('themeSwitchAnimation');
   animationElement.classList.add('active');
-  document.body.classList.add('transitioning'); // Add transitioning class
+  document.body.classList.add('transitioning');
   setTimeout(() => {
     animationElement.classList.remove('active');
-    document.body.classList.remove('transitioning'); // Remove transitioning class
+    document.body.classList.remove('transitioning');
   }, 500);
 });
 

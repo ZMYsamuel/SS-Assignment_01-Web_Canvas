@@ -21,37 +21,73 @@
 
 | **Other useful widgets** | **Score** | **Check** |
 | :----------------------- | :-------: | :-------: |
-| Name of widgets          |   1~5%    |     N     |
+| Drag Tool, Theme Toggle, Transparency Adjustment...       |   1~5%    |     Y     |
 
 
 ---
 
-### How to use 
+### How to Use
 
-    Describe how to use your web and maybe insert images to help you explain.
-    Basic control tools (30%)
-    Brush and Eraser (You can not use white color as eraser!)
-    用滑鼠點擊工具按鈕，即可使用鼠標在畫布上進行塗鴉或擦去。
-    Color selector (<input type=“color”> is not acceptable)
-    用滑鼠點擊選取顏色。可以選擇常用顏色或使用色條與色盤進行選擇。
-    Simple menu (brush size)
-    使用滑鼠移動拉桿進而調整筆刷大小。
-    Text input (10%)
-    User can type texts on canvas
-    用滑鼠點擊工具按鈕進入文字輸入狀態，至畫布上的指定地點後點擊，會出現輸入框，輸入完成後使用鍵盤Enter確定，文字即會印刷在畫布的指定位置上。
-    Font menu (typeface and size)
-    透過選單可選擇字型；輸入數字可調整文字大小。
-    Cursor icon (10%)
-    The image should change according to the currently used tool
-    不同工具的cursor都不一樣，方便了解自己現在所使用的工具
-    Refresh button (5%)
-    Reset canvas 
+This section provides a detailed guide on how to use the web application, including descriptions of its tools and features.
 
-### Bonus Function description
+#### Basic Control Tools
 
-    Decribe your bonus function and how to use it.
-    1. 使用brush與eraser時，在鼠標處會顯示一個圓框，圓框提示了當前的顏色、透明度以及筆刷大小，方便得知塗鴉/擦去範圍。
-    2.在Simple menu處增加透明度調整拉桿，可使用滑鼠移動拉桿進而調整透明度。
+
+
+- **Brush and Eraser**  
+<img width="500px" src="./readme_img/brush&eraser.png"/>
+    Click the "Brush" or "Eraser" button to use the mouse for drawing or erasing on the canvas. The eraser can remove everything on the canvas, including uploaded images.
+
+- **Color Selector**  
+<img width="500px" src="./readme_img/color.png"/>
+    Click to select a color. You can choose from commonly used colors or use the color slider and palette for more options.
+
+- **Simple Menu (Brush Size)**  
+    Adjust the brush size by moving the slider with the mouse.
+
+- **Text Input**  
+    Click the "Text" button to enter text input mode. Click on the desired location on the canvas to open a text box. After typing, press the Enter key to confirm, and the text will appear at the specified position.
+
+- **Font Menu (Typeface and Size)**  
+    Use the menu to select a font type. Adjust the font size by entering a number.
+
+- **Cursor Icon**  
+    Each tool has a unique cursor icon, making it easy to identify the currently selected tool.
+
+- **Refresh Button**  
+    Click the "Clear" button to reset the canvas. A confirmation dialog will appear. Once confirmed, all content on the canvas will be cleared. This action can be undone using the Undo button and redone using the Redo button.
+
+#### Advanced Tools
+
+- **Different Brush Shapes (15%)**  
+    Includes circle, rectangle, and triangle brushes (5% for each shape). Drag the cursor to draw shapes of varying sizes. Click the corresponding button to activate the desired shape tool.
+
+- **Un/Re-do Button (10%)**  
+    Click the "Undo" button to revert to the previous action. Click the "Redo" button to cancel an Undo action. Keyboard shortcuts Ctrl+Z and Ctrl+Y are also supported.
+
+- **Image Tool (5%)**  
+    Click the "Upload" button to select and upload an image from your local device. After uploading, use the mouse to adjust the image's position and the scroll wheel to resize it. Confirm placement by clicking the left mouse button.
+
+- **Download (5%)**  
+    Click the "Download" button to save the current canvas as a PNG image file without a background.
+
+### Bonus Function Description
+
+This section describes additional bonus features and their usage:
+
+1. **Drag Tool**  
+     Click the "Drag" button to enter drag mode. Use the mouse to move the canvas and the scroll wheel to zoom in or out.
+
+2. **Theme Toggle**  
+     Use the "Theme" button to switch between light and dark modes.
+
+3. **Transparency Adjustment**  
+     A transparency slider is added to the Simple Menu. Adjust the transparency by moving the slider with the mouse.
+
+4. **Straight Line Tool**  
+     A straight-line drawing tool is available under "Different Brush Shapes." It operates similarly to other drawing tools.
+
+
 
 ### Web page link
 
@@ -60,6 +96,34 @@
 ### Others (Optional)
 
     Anything you want to say to TAs.
+
+Thank you for reviewing our work! I truly appreciate the time and effort you’ve put into evaluating this assignment. Your feedback is invaluable to me, and I hope my submission meets your expectations. Thanks again for your hard work and dedication!
+
+#### highlights of the project:
+
+1. **Enhanced User Experience**:
+   - Smooth light/dark mode transitions.
+   - Interactive buttons with hover and active feedback.
+
+2. **Advanced Tools**:
+   - Custom color picker with gradient-based selection.
+   - Undo/Redo functionality with keyboard shortcuts (`Ctrl+Z`/`Ctrl+Y`).
+
+3. **Bonus Features**:
+   - "Fill Shape" toggle for hollow/solid shapes.
+   - Cursor overlay showing brush size, color, and transparency.
+
+4. **Optimized Design**:
+   - Responsive layout for all screen sizes.
+   - Consistent and reusable styles for better maintainability.
+
+
+#### Optimization Features
+
+1. When using the brush or eraser, a circular overlay appears at the cursor, indicating the current color, transparency, and brush size for better precision.
+2. A "Fill Shape" toggle is available to switch between hollow and solid shapes for circle, rectangle, and triangle brushes.
+3. Enhanced button designs include hover and selection feedback, with animations for selected icons.
+4. Switching themes (light/dark mode) includes special transition effects.
 
 <style>
 table th{
