@@ -33,7 +33,7 @@
 #### Basic Control Tools
 
 - **Brush and Eraser**  
-<img width="50%" src="./readme_img/brush&eraser.png"/>
+<img width="25%" src="./readme_img/brush&eraser.png"/>
     Click the "Brush" or "Eraser" button to use the mouse for drawing or erasing on the canvas. The eraser can remove everything on the canvas, including uploaded images.
 
 - **Color Selector**  
