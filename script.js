@@ -143,13 +143,13 @@ function selectTool(event) {
 
 function getCursorStyle(tool) {
   switch (tool) {
-    case 'brush': return "url('./src/small-brush-icon.png'), auto";
-    case 'eraser': return "url('./src/eraser_icon.png'), auto";
-    case 'text': return "url('./src/text_icon.png'), auto";
-    case 'line': return "url('./src/line_icon.png'), auto";
-    case 'circle': return "url('./src/circle_icon.png'), auto";
-    case 'rectangle': return "url('./src/rectangle_icon.png'), auto";
-    case 'triangle': return "url('./src/triangle_icon.png'), auto";
+    case 'brush': return "url('./img/brush_cursor.png') 10 56, auto";
+    case 'eraser': return "url('./img/eraser_cursor.png') 10 56, auto";
+    case 'text': return "url('./img/text_cursor.png') 32 40, auto";
+    case 'line': return "url('./img/line_cursor.png') 32 32, auto";
+    case 'circle': return "url('./img/circle_cursor.png') 32 32, auto";
+    case 'rectangle': return "url('./img/rectangle_cursor.png') 32 32, auto";
+    case 'triangle': return "url('./img/triangle_cursor.png') 32 32, auto";
     default: return 'crosshair';
   }
 }
@@ -190,12 +190,18 @@ function draw(event) {
 
   switch (selectedTool) {
     case 'brush':
-      // ctx.beginPath(); // 每次繪製新的一段筆畫
-      // ctx.moveTo(startX, startY); // 確保從上一點開始
-      ctx.lineTo(x, y);
-      ctx.stroke();
-      // startX = x; // 更新起點
-      // startY = y;
+      if (opacityValue.textContent == 1) {
+        ctx.lineTo(x, y);
+        ctx.stroke();
+      }
+      else {
+        ctx.beginPath(); // 每次繪製新的一段筆畫
+        ctx.moveTo(startX, startY); // 確保從上一點開始
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        startX = x; // 更新起點
+        startY = y;
+      }
       break;
     case 'eraser':
       ctx.globalCompositeOperation = 'destination-out'; // Use destination-out for erasing
@@ -483,7 +489,7 @@ const blockHeight = colorBlock.height;
 
 const colorLine = document.getElementById('colorline');
 const ctxLine = colorLine.getContext('2d');
-colorLine.width = 20;
+colorLine.width = 50;
 colorLine.height = 200;
 const lineWidth = colorLine.width;
 const lineHeight = colorLine.height;
@@ -601,6 +607,7 @@ function updateColorNow(e) {
   // remove active class from all color buttons
   const colorButtons = document.querySelectorAll('.color-btn');
   colorButtons.forEach(btn => btn.classList.remove('active'));
+  colornowElement.classList.add('active');
 }
 // 讓 colornow 可以被選取並設置為 active
 const colornowElement = document.getElementById('colornow');
@@ -612,7 +619,5 @@ colornowElement.addEventListener('click', () => {
   colornowElement.classList.add('active');
   colorPicker.value = rgbaColor;
   updateColor();
-
-  // 更新自定義游標顏色
   updateCursorStyle();
 });
