@@ -33,7 +33,7 @@
 #### Basic Control Tools
 
 - **Brush and Eraser**  
-<img width="300px" src="./readme_img/brush&eraser.png"/>
+<img width="50%" src="./readme_img/brush&eraser.png"/>
     Click the "Brush" or "Eraser" button to use the mouse for drawing or erasing on the canvas. The eraser can remove everything on the canvas, including uploaded images.
 
 - **Color Selector**  
@@ -101,8 +101,8 @@ This section describes additional bonus features and their usage:
 
     your web page URL.
 
-    https://ss-assignment01-webcanvas.web.app
-    https://ss-assignment01-webcanvas.firebaseapp.com/
+- https://ss-assignment01-webcanvas.web.app
+- https://ss-assignment01-webcanvas.firebaseapp.com/
 
 ### Others (Optional)
 
